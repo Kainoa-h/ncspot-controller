@@ -1,4 +1,5 @@
 mod cli;
+mod config;
 mod control;
 mod monitor;
 mod ncspot_event;
