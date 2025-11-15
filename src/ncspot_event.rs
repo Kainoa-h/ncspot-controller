@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Deserialize, Serialize)]
 pub struct NcspotEvent {
     pub mode: Mode,
-    pub playable: Playable,
+    pub playable: Option<Playable>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
