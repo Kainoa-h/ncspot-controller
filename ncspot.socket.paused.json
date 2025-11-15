@@ -1,0 +1,30 @@
+{
+  "mode": {
+    "Paused": {
+      "secs": 211,
+      "nanos": 65000000
+    }
+  },
+  "playable": {
+    "type": "Track",
+    "id": "0ygAYQQy7bfDN6gH640bbl",
+    "uri": "spotify:track:0ygAYQQy7bfDN6gH640bbl",
+    "title": "Wake Me Up",
+    "track_number": 5,
+    "disc_number": 1,
+    "duration": 229613,
+    "artists": [
+      "Ed Sheeran"
+    ],
+    "artist_ids": [
+      "6eUKZXaKkcviH0Ku9w2n3V"
+    ],
+    "album": "+",
+    "album_id": "02pi98kE0nra0yBqCStzbC",
+    "album_artists": [
+      "Ed Sheeran"
+    ],
+    "cover_url":"https: //i.scdn.co/image/ab67616d0000b2736567a393a964a845a89b7f70","url":"https: //open.spotify.com/track/0ygAYQQy7bfDN6gH640bbl","added_at":"2015-08-25T06:20:18Z","list_index":10,"is_local":false,
+    "is_playable": true
+  }
+}

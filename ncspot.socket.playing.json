@@ -1,0 +1,34 @@
+{
+  "mode": {
+    "Playing": {
+      "secs_since_epoch": 1763204238,
+      "nanos_since_epoch": 447004000
+    }
+  },
+  "playable": {
+    "type": "Track",
+    "id": "2iUmqdfGZcHIhS3b9E9EWq",
+    "uri": "spotify:track:2iUmqdfGZcHIhS3b9E9EWq",
+    "title": "Everybody Talks",
+    "track_number": 3,
+    "disc_number": 1,
+    "duration": 177280,
+    "artists": [
+      "Neon Trees"
+    ],
+    "artist_ids": [
+      "0RpddSzUHfncUWNJXKOsjy"
+    ],
+    "album": "Picture Show (Deluxe Edition)",
+    "album_id": "7sAjcMLKiGnota7hQjmT16",
+    "album_artists": [
+      "Neon Trees"
+    ],
+    "cover_url": "https://i.scdn.co/image/ab67616d0000b273fd5d375e2fa7061d0826e170",
+    "url": "https://open.spotify.com/track/2iUmqdfGZcHIhS3b9E9EWq",
+    "added_at": "2016-04-27T11:46:17Z",
+    "list_index": 106,
+    "is_local": false,
+    "is_playable": true
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "mode": "FinishedTrack",
+  "playable": {
+    "type": "Track",
+    "id": "0uG7aO1e59rc83mD93ZE6C",
+    "uri": "spotify:track:0uG7aO1e59rc83mD93ZE6C",
+    "title": "For Baltimore (Acoustic)",
+    "track_number": 17,
+    "disc_number": 1,
+    "duration": 209359,
+    "artists": [
+      "All Time Low"
+    ],
+    "artist_ids": [
+      "46gyXjRIvN1NL1eCB8GBxo"
+    ],
+    "album": "Don't Panic: It's Longer Now!",
+    "album_id": "4yXwaoUnoQn5AzkfU4vLSe",
+    "album_artists": [
+      "All Time Low"
+    ],
+    "cover_url": "https://i.scdn.co/image/ab67616d0000b273e0f95e98889bfa5f04b9fb13",
+    "url": "https://open.spotify.com/track/0uG7aO1e59rc83mD93ZE6C",
+    "added_at": "2016-01-31T04:42:27Z",
+    "list_index": 33,
+    "is_local": false,
+    "is_playable": true
+  }
+}
