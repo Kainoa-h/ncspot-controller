@@ -11,7 +11,7 @@ A Rust utility to monitor and control [ncspot](https://github.com/hrkfdn/ncspot)
 
 ```bash
 brew tap kainoa-h/tap
-brew install --build-from-source ncspot-controller
+brew install ncspot-controller
 ```
 
 ## Usage
