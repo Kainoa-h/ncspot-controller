@@ -4,8 +4,33 @@ use ncspot_event::{Mode, NcspotEvent};
 use notify::{Config, Event, EventKind, RecommendedWatcher, RecursiveMode, Watcher};
 use std::io::{BufRead, BufReader};
 use std::os::unix::net::UnixStream;
-use std::path::Path;
+use std::path::{Path, PathBuf};
+use std::process::Command;
 use std::sync::mpsc::channel;
+
+fn get_ncspot_socket_path() -> Result<PathBuf, Box<dyn std::error::Error>> {
+    let output = Command::new("ncspot")
+        .arg("info")
+        .output()?;
+
+    if !output.status.success() {
+        return Err("Failed to run 'ncspot info'".into());
+    }
+
+    let stdout = String::from_utf8(output.stdout)?;
+
+    for line in stdout.lines() {
+        if line.starts_with("USER_RUNTIME_PATH") {
+            let parts: Vec<&str> = line.split_whitespace().collect();
+            if parts.len() >= 2 {
+                let runtime_path = parts[1];
+                return Ok(PathBuf::from(runtime_path).join("ncspot.sock"));
+            }
+        }
+    }
+
+    Err("Could not find USER_RUNTIME_PATH in ncspot info output".into())
+}
 
 fn wait_for_socket(socket_path: &str) -> Result<(), Box<dyn std::error::Error>> {
     let path = Path::new(socket_path);
@@ -93,17 +118,26 @@ fn handle_event(event: NcspotEvent) {
 }
 
 fn main() {
-    let socket_path = "/tmp/ncspot-501/ncspot.sock";
+    let socket_path = match get_ncspot_socket_path() {
+        Ok(path) => path,
+        Err(e) => {
+            eprintln!("Failed to get ncspot socket path: {}", e);
+            eprintln!("Make sure ncspot is installed and accessible in your PATH");
+            std::process::exit(1);
+        }
+    };
+
+    println!("Using socket path: {}", socket_path.display());
 
     loop {
         // Wait for socket to be available
-        if let Err(e) = wait_for_socket(socket_path) {
+        if let Err(e) = wait_for_socket(socket_path.to_str().unwrap()) {
             eprintln!("Error waiting for socket: {}", e);
             std::process::exit(1);
         }
 
         // Connect to ncspot's socket
-        let stream = match UnixStream::connect(socket_path) {
+        let stream = match UnixStream::connect(&socket_path) {
             Ok(s) => s,
             Err(e) => {
                 eprintln!("Failed to connect to socket: {}", e);
