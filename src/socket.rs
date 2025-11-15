@@ -35,8 +35,6 @@ pub fn wait_for_socket(socket_path: &str) -> Result<(), Box<dyn std::error::Erro
         return Ok(());
     }
 
-    println!("Waiting for socket file to be created at {}...", socket_path);
-
     // Watch the parent directory for the socket file to be created
     let parent_dir = path.parent().ok_or("Invalid socket path")?;
     let socket_name = path.file_name().ok_or("Invalid socket path")?;
@@ -63,7 +61,6 @@ pub fn wait_for_socket(socket_path: &str) -> Result<(), Box<dyn std::error::Erro
                     EventKind::Create(_) | EventKind::Modify(_) | EventKind::Any => {
                         for event_path in &event.paths {
                             if event_path.file_name() == Some(socket_name) {
-                                println!("Socket file detected!");
                                 // Double-check it exists
                                 if path.exists() {
                                     return Ok(());

@@ -17,8 +17,8 @@ fn main() {
     let socket_path = match get_ncspot_socket_path() {
         Ok(path) => path,
         Err(e) => {
-            eprintln!("Failed to get ncspot socket path: {}", e);
-            eprintln!("Make sure ncspot is installed and accessible in your PATH");
+            println!("Failed to get ncspot socket path: {}", e);
+            println!("Make sure ncspot is installed and accessible in your PATH");
             std::process::exit(1);
         }
     };
@@ -26,7 +26,7 @@ fn main() {
     match &cli.command {
         Some(cmd) => {
             if let Err(e) = execute_command(&socket_path, cmd) {
-                eprintln!("Failed to send command: {}", e);
+                println!("Failed to send command: {}", e);
                 std::process::exit(1);
             }
         }

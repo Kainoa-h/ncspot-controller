@@ -37,7 +37,7 @@ fn execute_hook(config: &Config, state: &str, artist: &str, title: &str, album: 
             .env("NCSPOT_ALBUM", album)
             .spawn()
         {
-            eprintln!("Failed to execute hook script: {}", e);
+            println!("Failed to execute hook script: {}", e);
         }
     }
 }
@@ -56,28 +56,20 @@ fn handle_event(event: NcspotEvent, config: &Config) {
         (state, String::new(), String::new(), String::new())
     };
 
-    println!("{}|{}|{}|{}", state, artist, title, album);
     execute_hook(config, state, &artist, &title, &album);
 }
 
 fn send_stopped_event(config: &Config) {
-    println!("stopped|||");
     execute_hook(config, "stopped", "", "", "");
 }
 
 pub fn run_monitor(socket_path: &PathBuf) {
-    eprintln!("Starting monitor mode...");
-    eprintln!("Using socket path: {}", socket_path.display());
-
     let config = Config::load();
-    if let Some(hook) = &config.hook_script {
-        eprintln!("Hook script configured: {}", hook);
-    }
 
     loop {
         // Wait for socket to be available
         if let Err(e) = wait_for_socket(socket_path.to_str().unwrap()) {
-            eprintln!("Error waiting for socket: {}", e);
+            println!("Error waiting for socket: {}", e);
             std::process::exit(1);
         }
 
@@ -85,13 +77,10 @@ pub fn run_monitor(socket_path: &PathBuf) {
         let stream = match UnixStream::connect(socket_path) {
             Ok(s) => s,
             Err(e) => {
-                eprintln!("Failed to connect to socket: {}", e);
-                eprintln!("Retrying...");
+                println!("Failed to connect to socket: {}", e);
                 continue;
             }
         };
-
-        eprintln!("Connected to ncspot socket, waiting for messages...");
 
         let reader = BufReader::new(stream);
         for line in reader.lines() {
@@ -99,19 +88,19 @@ pub fn run_monitor(socket_path: &PathBuf) {
                 Ok(content) => match serde_json::from_str::<NcspotEvent>(&content) {
                     Ok(event) => handle_event(event, &config),
                     Err(e) => {
-                        eprintln!("Failed to parse JSON: {}", e);
-                        eprintln!("Raw content: {}", content);
+                        println!("Failed to parse JSON: {}", e);
                     }
                 },
-                Err(err) => {
-                    eprintln!("Connection lost: {}", err);
+                Err(e) => {
+                    println!("Connection lost: {}", e);
+                    send_stopped_event(&config);
                     break;
                 }
             }
         }
 
-        // Connection closed (either cleanly or with error)
+        // Connection closed cleanly
+        println!("ncspot connection closed");
         send_stopped_event(&config);
-        eprintln!("Waiting for ncspot to restart...");
     }
 }
