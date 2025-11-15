@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - name: Build release binary
+        run: cargo build --release
+
+      - name: Get version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Create tarball
+        run: |
+          cd target/release
+          tar czf ncspot-controller-${{ steps.version.outputs.VERSION }}-macos-aarch64.tar.gz ncspot-controller
+          cd ../..
+
+      - name: Calculate SHA256
+        id: sha
+        run: |
+          SHA=$(shasum -a 256 target/release/ncspot-controller-${{ steps.version.outputs.VERSION }}-macos-aarch64.tar.gz | cut -d ' ' -f 1)
+          echo "SHA256=$SHA" >> $GITHUB_OUTPUT
+          echo "SHA256: $SHA"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: target/release/ncspot-controller-${{ steps.version.outputs.VERSION }}-macos-aarch64.tar.gz
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
