@@ -5,6 +5,8 @@ use std::path::PathBuf;
 #[derive(Debug, Deserialize, Default)]
 pub struct Config {
     pub hook_script: Option<String>,
+    #[serde(default)]
+    pub download_cover: bool,
 }
 
 impl Config {

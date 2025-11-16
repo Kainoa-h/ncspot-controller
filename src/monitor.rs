@@ -1,7 +1,7 @@
 use crate::config::Config;
 use crate::ncspot_event::{Mode, NcspotEvent};
 use crate::socket::wait_for_socket;
-use std::io::{BufRead, BufReader};
+use std::io::{BufRead, BufReader, Write};
 use std::os::unix::net::UnixStream;
 use std::path::PathBuf;
 use std::process::Command;
@@ -42,9 +42,43 @@ fn execute_hook(config: &Config, state: &str, artist: &str, title: &str, album: 
     }
 }
 
+fn download_cover(cover_url: &str) {
+    const COVER_PATH: &str = "/tmp/ncspot-controller-cover.jpg";
+
+    match ureq::get(cover_url).call() {
+        Ok(response) => {
+            let mut buffer = Vec::new();
+            if let Err(e) = response.into_reader().read_to_end(&mut buffer) {
+                println!("Failed to read cover image: {}", e);
+                return;
+            }
+
+            match std::fs::File::create(COVER_PATH) {
+                Ok(mut file) => {
+                    if let Err(e) = file.write_all(&buffer) {
+                        println!("Failed to write cover image: {}", e);
+                    }
+                }
+                Err(e) => {
+                    println!("Failed to create cover file: {}", e);
+                }
+            }
+        }
+        Err(e) => {
+            println!("Failed to download cover: {}", e);
+        }
+    }
+}
+
 fn handle_event(event: NcspotEvent, config: &Config) {
     let (state, artist, title, album) = if let Some(playable) = event.playable {
         let state = mode_to_state_string(&event.mode);
+
+        // Download cover if enabled
+        if config.download_cover && !playable.cover_url.is_empty() {
+            download_cover(&playable.cover_url);
+        }
+
         (
             state,
             playable.artists.join(", "),

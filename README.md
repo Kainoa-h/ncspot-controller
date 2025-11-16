@@ -64,7 +64,10 @@ Create a config file at `~/.config/ncspot-controller/config.toml`:
 
 ```toml
 hook_script = "~/.config/ncspot-controller/hook.sh"
+download_cover = false
 ```
+
+*download_cover if set to true downloads the current album cover to "/tmp/ncspot-controller-cover.jpg"*
 
 ### Hook Script
 
