@@ -97,8 +97,7 @@ fn send_stopped_event(config: &Config) {
     execute_hook(config, "stopped", "", "", "");
 }
 
-pub fn run_monitor(socket_path: &PathBuf) {
-    let config = Config::load();
+pub fn run_monitor(socket_path: &PathBuf, config: &Config) {
 
     loop {
         // Wait for socket to be available

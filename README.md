@@ -65,6 +65,8 @@ Create a config file at `~/.config/ncspot-controller/config.toml`:
 ```toml
 hook_script = "~/.config/ncspot-controller/hook.sh"
 download_cover = false
+# optionally explicitly define path to ncspot binary. Omit to use PATH
+ncspot_binary = "/usr/local/bin/ncspot"
 ```
 
 *download_cover if set to true downloads the current album cover to "/tmp/ncspot-controller-cover.jpg"*

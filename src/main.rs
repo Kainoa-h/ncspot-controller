@@ -13,12 +13,14 @@ use socket::get_ncspot_socket_path;
 
 fn main() {
     let cli = Cli::parse();
+    let config = config::Config::load();
 
-    let socket_path = match get_ncspot_socket_path() {
+    let socket_path = match get_ncspot_socket_path(&config.ncspot_binary) {
         Ok(path) => path,
         Err(e) => {
             println!("Failed to get ncspot socket path: {}", e);
-            println!("Make sure ncspot is installed and accessible in your PATH");
+            let binary = config.ncspot_binary.as_deref().unwrap_or("ncspot");
+            println!("Make sure {} is installed and accessible", binary);
             std::process::exit(1);
         }
     };
@@ -30,6 +32,6 @@ fn main() {
                 std::process::exit(1);
             }
         }
-        None => run_monitor(&socket_path),
+        None => run_monitor(&socket_path, &config),
     }
 }
