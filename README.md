@@ -1,11 +1,21 @@
 # ncspot-controller
 
-A Rust utility to monitor and control [ncspot](https://github.com/hrkfdn/ncspot) via its Unix socket interface.
+A Rust service to monitor and control [ncspot](https://github.com/hrkfdn/ncspot) via its Unix socket interface. Much like `playerctl` but built specifically for ncspot, enabling CLI control of ncspot in MacOS.
+
+## Why?
+
+I built this so that I can integrate ncspot with my [sketchybar](http://github.com/FelixKratz/SketchyBar) to show a song preview widget.  
+It also allows for controlling ncspot's playback from the CLI, which unlocks various workflow integrations for users of MacOS who can't use `playerctl`, such as:
+
+- Custom bar integrations ([like mine](https://github.com/Kainoa-h/MacSetup?tab=readme-ov-file#sketchybar--sketchybar--link-2-project))
+- Controlling ncspot via Alfred/Raycast
+- Whatever else you can think of...
 
 ## Features
 
 - **Monitor mode**: Continuously monitor ncspot's playback state and execute hooks on state changes
 - **Control mode**: Send commands to ncspot from the command line
+- **Images**: Automatically (optionally) installs the current track album image
 
 ## Installation
 
@@ -32,7 +42,7 @@ brew services start ncspot-controller
 
 This will:
 
-- Connect to ncspot's Unix socket
+- Connect to ncspot's Unix socket (detected automatically via `ncspot info` command)
 - Execute a configured hook script on state changes (if configured)
 - Automatically reconnect if ncspot restarts
 
