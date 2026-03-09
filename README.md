@@ -17,6 +17,9 @@ It also allows for controlling ncspot's playback from the CLI, which unlocks var
 - **Control mode**: Send commands to ncspot from the command line
 - **Album Images**: Automatically (optionally) installs the current track album image to a temporary path
 
+![widget example](./widget-example.png)
+![widget example with album art](./widget-example-with-album-art.png)
+
 ## Installation
 
 ```bash
