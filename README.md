@@ -8,6 +8,7 @@ I built this so that I can integrate ncspot with [sketchybar](http://github.com/
 It also allows for controlling ncspot's playback from the CLI, which unlocks various workflow integrations for users of MacOS who can't use `playerctl`, such as:
 
 - Custom bar integrations ([like mine](https://github.com/Kainoa-h/MacSetup?tab=readme-ov-file#sketchybar--sketchybar--link-2-project))
+- Controlling ncspot via CLI commands while its tucked away with tmux
 - Controlling ncspot via Alfred/Raycast
 - Whatever else you can think of...
 
