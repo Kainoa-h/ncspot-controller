@@ -2,6 +2,7 @@ use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
 #[command(name = "ncspot-controller")]
+#[command(version)]
 #[command(about = "Monitor and control ncspot", long_about = None)]
 pub struct Cli {
     #[command(subcommand)]
